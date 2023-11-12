@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fly With Us</title>
+</head>
+<style>
+    #flight-list {
+        display: flex;
+        gap: 20px;
+        flex-direction: column;
+    }
+
+    .flight {
+        background-color: blue;
+        color: aliceblue;
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+    }
+</style>
+
+<body>
+    <div class="search-sort-container">
+        <input type="text" id="search-input" placeholder="Search by destination...">
+        <button id="sort-by-price">Sort by price</button>
+    </div>
+
+    <form id="add-flight-form">
+        <h2>Add A New Flight</h2>
+        <label for="from">From:</label>
+        <input type="text" id="from" required><br>
+
+        <label for="to">TO:</label>
+        <input type="text" id="to" required><br>
+
+        <label for="price">Price:</label>
+        <input type="number" id="price" required><br>
+
+        <label for="depart">Depart:</label>
+        <input type="date" id="depart" required><br>
+
+        <label for="return">Return:</label>
+        <input type="date" id="return" required><br>
+
+        <button type="submit">Add Flight</button>
+    </form>
+
+    <form id="update-price-form">
+        <h2>Update flight price</h2>
+        <label for="from">From:</label>
+        <input type="text" id="from" required><br>
+
+        <label for="to">TO:</label>
+        <input type="text" id="to" required><br>
+
+        <label for="price">Price:</label>
+        <input type="number" id="price" required><br>
+
+        <label for="depart">Depart:</label>
+        <input type="date" id="depart" required><br>
+
+        <label for="return">Return:</label>
+        <input type="date" id="return" required><br>
+
+        <button id="update-price">update price</button>
+    </form>
+
+
+
+
+    <div id="flight-list">
+
+    </div>
+
+    <script>
+        const flights = [
+            {
+                from: "Tel aviv",
+                to: 'amsterdam',
+                price: 40,
+                dates: [
+                    { depart: new Date('2023.11.24') },
+                    { return: new Date('2023.12.1') }
+                ]
+            },
+            {
+                from: "Tel aviv",
+                to: 'london',
+                price: 75,
+                dates: [
+                    { depart: new Date('2023.11.28') },
+                    { return: new Date('2023.12.12') }
+                ]
+            },
+            {
+                from: "Athens",
+                to: 'Prague',
+                price: 95,
+                dates: [
+                    { depart: new Date('2023.11.28') },
+                    { return: new Date('2023.12.12') }
+                ]
+            },
+            {
+                from: "Berlin",
+                to: 'Prague',
+                price: 22,
+                dates: [
+                    { depart: new Date('2023.11.28') },
+                    { return: new Date('2023.12.12') }
+                ]
+            },
+            {
+                from: "London",
+                to: 'Berlin',
+                price: 100,
+                dates: [
+                    { depart: new Date('2023.11.28') },
+                    { return: new Date('2023.12.12') }
+                ]
+            }
+        ];
+
+        let sorted = false;
+        const flightListContainer = document.getElementById("flight-list");
+        function showFlights(flights) {
+            flightListContainer.innerHTML = '';
+            flights.forEach(flight => {
+                const flightCard = document.createElement("div");
+                flightCard.classList.add("flight");
+
+                // from: "Athens",
+                // to: 'Prague',
+                // price: 95,
+                // dates: [
+                //     { depart: new Date('28.11.2023') },
+                //     { return:
+
+
+                const fromP = document.createElement("p");
+                fromP.textContent = `From: ${flight.from}`;
+                fromP.classList.add("flight-info");
+                flightCard.appendChild(fromP);
+
+                const toP = document.createElement("p");
+                toP.textContent = `To: ${flight.to}`;
+                toP.classList.add("flight-info");
+                flightCard.appendChild(toP);
+
+                const priceP = document.createElement("p");
+                priceP.textContent = `Price: ${flight.price}`;
+                priceP.classList.add("flight-info");
+                flightCard.appendChild(priceP);
+
+                const departP = document.createElement("p");
+                const departObj = flight.dates[0].depart;
+                departP.textContent = `Depart: ${departObj.getDate()}.${departObj.getMonth()}.${departObj.getFullYear()}`;
+                departP.classList.add("flight-info");
+                flightCard.appendChild(departP);
+
+                const returnP = document.createElement("p");
+                const returnObj = flight.dates[1].return;
+                returnP.textContent = `Return: ${returnObj.getDate()}.${returnObj.getMonth()}.${returnObj.getFullYear()}`;
+                returnP.classList.add("flight-info");
+                flightCard.appendChild(returnP);
+
+
+
+
+
+                flightListContainer.appendChild(flightCard);
+            });
+        }
+        showFlights(flights);
+
+        //search
+        const searchInput = document.getElementById("search-input");
+        const searchFlight = searchInput.addEventListener(
+            "input",
+            function (e) {
+                filteredFlights = flights.filter((flight) =>
+                    flight.to.toLowerCase().includes(e.target.value.toLowerCase())
+                );
+                showFlights(filteredFlights);
+            }
+        );
+
+        //sort by price
+        const sortByPrice = document.querySelector("#sort-by-price");
+        sortByPrice.addEventListener("click", () => {
+            let sortedFlightsArray = flights.slice().sort((a, b) => {
+                return b.price - a.price;
+            });
+            showFlights(sortedFlightsArray);
+            sorted=true;
+        });
+
+
+
+        // const addMovieForm = document.getElementById("add-movie-form");
+        // addMovieForm.addEventListener("submit", function (event) {
+        //     event.preventDefault();
+        //     const title = document.getElementById("title").value;
+        //     const genre = document.getElementById("genre").value;
+        //     const director = document.getElementById("director").value;
+        //     const releaseYear = document.getElementById("releaseYear").value;
+        //     const rating = document.getElementById("rating").value;
+        //     const img = document.getElementById("img").value;
+
+        //     const newMovie = {
+        //         id: movies.length + 1,
+        //         title,
+        //         genre,
+        //         director,
+        //         releaseYear,
+        //         rating,
+        //         votes: 0,
+        //         img
+        //     }
+        //     movies.push(newMovie);
+        //     console.log(movies);
+        //     showMovies();
+        //     addMovieForm.reset()
+        // })
+
+    </script>
+
+</body>
+
+</html>
