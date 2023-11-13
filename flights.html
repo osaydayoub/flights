@@ -74,8 +74,12 @@
 
     <div id="flight-Cart">
         <button id="MyCart-button">My Cart</button>
+
         <h1>hello from the cart:</h1>
         <div id="flights-cart-List"></div>
+        <button id="book-button">Book</button>
+        <div id="confirmation-message"></div>
+
     </div>
 
     <script>
@@ -140,14 +144,6 @@
                 const flightCard = document.createElement("div");
                 flightCard.classList.add("flight");
 
-                // from: "Athens",
-                // to: 'Prague',
-                // price: 95,
-                // dates: [
-                //     { depart: new Date('28.11.2023') },
-                //     { return:
-
-
                 const fromP = document.createElement("p");
                 fromP.textContent = `From: ${flight.from}`;
                 fromP.classList.add("flight-info");
@@ -176,26 +172,38 @@
                 flightCard.appendChild(returnP);
 
                 if (c === 1) {
-                    
+
                     const selectButton = document.createElement("button");
                     selectButton.textContent = `Select`
                     flightCard.appendChild(selectButton);
 
                     selectButton.addEventListener('click', function () {
                         if (!flightsCartArray.includes(flight)) {
+
                             flightsCartArray.push(flight);
                         }
                     });
                 } else if (c === 2) {
                     const inputLabl = document.createElement("label");
-                    inputLabl.for="travelers-number"
+                    inputLabl.for = "travelers-number"
                     inputLabl.textContent = `Travelers Number:`
+
                     const travelersNumberInput = document.createElement("input");
-                    travelersNumberInput.id="travelers-number"
-                    travelersNumberInput.type="number";
+                    travelersNumberInput.id = "travelers-number"
+                    travelersNumberInput.type = "number";
+                    travelersNumberInput.value = "1";
+                    travelersNumberInput.min="0";
+                    travelersNumberInput.required="required";
                     flightCard.appendChild(inputLabl);
                     flightCard.appendChild(travelersNumberInput);
-                 
+                    
+
+                    travelersNumberInput.addEventListener("input", function (e) {
+                        flight.travelersNumber = e.target.value;
+                    }
+                    );
+
+
 
                     const removeButton = document.createElement("button");
                     removeButton.textContent = `Remove`
@@ -204,13 +212,12 @@
                     removeButton.addEventListener('click', function () {
                         if (flightsCartArray.includes(flight)) {
                             const index = flightsCartArray.indexOf(flight);
-                            flightsCartArray.splice(index,1);
-                            console.log(flightsCartArray);
+                            flightsCartArray.splice(index, 1);
+                            
                         }
                     });
 
                 }
-
 
                 element.appendChild(flightCard);
             });
@@ -241,6 +248,8 @@
 
         cartButton.addEventListener('click', function () {
             showFlights(flightsCartArray, flightsCartList, 2);
+            console.log(flightsCartArray);
+            console.log(flights);
 
         })
 
