@@ -68,11 +68,14 @@
         <button id="update-price">update price</button>
     </form>
 
-
-
-
     <div id="flight-list">
 
+    </div>
+
+    <div id="flight-Cart">
+        <button id="MyCart-button">My Cart</button>
+        <h1>hello from the cart:</h1>
+        <div id="flights-cart-List"></div>
     </div>
 
     <script>
@@ -124,10 +127,15 @@
             }
         ];
 
+        let flightsCartArray = [];
+
         let sorted = false;
         const flightListContainer = document.getElementById("flight-list");
-        function showFlights(flights) {
-            flightListContainer.innerHTML = '';
+        const flightsCart = document.getElementById("flight-Cart");
+        const flightsCartList = document.getElementById("flights-cart-List");
+        const cartButton = document.getElementById("MyCart-button")
+        function showFlights(flights, element, c) {
+            element.innerHTML = '';
             flights.forEach(flight => {
                 const flightCard = document.createElement("div");
                 flightCard.classList.add("flight");
@@ -167,19 +175,47 @@
                 returnP.classList.add("flight-info");
                 flightCard.appendChild(returnP);
 
-                const selectButton=document.createElement("button");
-                selectButton.textContent =`Select`
-                flightCard.appendChild(selectButton);
+                if (c === 1) {
+                    
+                    const selectButton = document.createElement("button");
+                    selectButton.textContent = `Select`
+                    flightCard.appendChild(selectButton);
+
+                    selectButton.addEventListener('click', function () {
+                        if (!flightsCartArray.includes(flight)) {
+                            flightsCartArray.push(flight);
+                        }
+                    });
+                } else if (c === 2) {
+                    const inputLabl = document.createElement("label");
+                    inputLabl.for="travelers-number"
+                    inputLabl.textContent = `Travelers Number:`
+                    const travelersNumberInput = document.createElement("input");
+                    travelersNumberInput.id="travelers-number"
+                    travelersNumberInput.type="number";
+                    flightCard.appendChild(inputLabl);
+                    flightCard.appendChild(travelersNumberInput);
+                 
+
+                    const removeButton = document.createElement("button");
+                    removeButton.textContent = `Remove`
+                    flightCard.appendChild(removeButton);
+
+                    removeButton.addEventListener('click', function () {
+                        if (flightsCartArray.includes(flight)) {
+                            const index = flightsCartArray.indexOf(flight);
+                            flightsCartArray.splice(index,1);
+                            console.log(flightsCartArray);
+                        }
+                    });
+
+                }
 
 
-
-
-
-
-                flightListContainer.appendChild(flightCard);
+                element.appendChild(flightCard);
             });
         }
-        showFlights(flights);
+        showFlights(flights, flightListContainer, 1);
 
         //search
         const searchInput = document.getElementById("search-input");
@@ -189,7 +225,7 @@
                 filteredFlights = flights.filter((flight) =>
                     flight.to.toLowerCase().includes(e.target.value.toLowerCase())
                 );
-                showFlights(filteredFlights);
+                showFlights(filteredFlights, flightListContainer, 1);
             }
         );
 
@@ -199,9 +235,15 @@
             let sortedFlightsArray = flights.slice().sort((a, b) => {
                 return b.price - a.price;
             });
-            showFlights(sortedFlightsArray);
-            sorted=true;
+            showFlights(sortedFlightsArray, flightListContainer, 1);
+            sorted = true;
         });
+
+        cartButton.addEventListener('click', function () {
+            showFlights(flightsCartArray, flightsCartList, 2);
+
+        })
+
 
 
 
