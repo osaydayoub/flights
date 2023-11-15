@@ -1,5 +1,6 @@
 // import { adminStatus as ad } from "./login.js"
-const logoutButton = document.querySelector(".logout-button");
+
+const logoutButton = document.querySelector("#logout-button");
 console.log(`logoutButton=${logoutButton}`)
 let newObject = window.localStorage.getItem("userInformation");
 console.log(JSON.parse(newObject));
@@ -65,16 +66,18 @@ const flights = [
 let flightsCartArray = [];
 
 let sorted = false;
+const addUpdateContainer= document.querySelector(".add-update-container");
 const addFlightForm = document.getElementById("add-flight-form");
 const updatePriceForm = document.getElementById("update-price-form");
 const flightListContainer = document.getElementById("flight-list");
 const flightsCart = document.getElementById("flight-Cart");
 const flightsCartList = document.getElementById("flights-cart-List");
 const cartButton = document.getElementById("MyCart-button");
+const closeButton=document.getElementById("close-button");
+
 
 if (adminStatus) {
-    addFlightForm.style.display = "block";
-    updatePriceForm.style.display = "block";
+    addUpdateContainer.style.display = "flex";
 }
 
 function showFlights(flights, element, c) {
@@ -198,11 +201,14 @@ sortByPrice.addEventListener("click", () => {
 
 
 cartButton.addEventListener('click', function () {
-    flightsCart.style.display = 'block';
+    flightsCart.style.display = 'flex';
     showFlights(flightsCartArray, flightsCartList, 2);
     console.log(flightsCartArray);
     console.log(flights);
 
+})
+closeButton.addEventListener('click', function () {
+    flightsCart.style.display = 'none';
 })
 
 const confirmationMessage = document.getElementById("confirmation-message");
@@ -212,6 +218,7 @@ bookButton.addEventListener('click', function () {
     flightsCartArray.forEach(flight => {
         totalPrice += flight.price * flight.travelersNumber;
     })
+    confirmationMessage.style.display='block';
     confirmationMessage.innerText = `Your flights booked successfully the total price is ${totalPrice}`;
     localStorage.setItem("myFlights.", JSON.stringify(flightsCartArray));
     let newObject = window.localStorage.getItem("myFlights.");

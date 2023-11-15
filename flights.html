@@ -12,7 +12,7 @@
 <body>
     <header>
         <button class="btn-style" id="MyCart-button">My Cart</button>
-        <button class="logout-button">Logout</button>
+        <button  class="btn-style" id="logout-button">Logout</button>
     </header>
     
     <div class="search-sort-container">
@@ -20,6 +20,7 @@
         <button id="sort-by-price">Sort by price</button>
     </div>
 
+    <div class="add-update-container">
     <form id="add-flight-form">
         <h2>Add A New Flight</h2>
         <label for="from">From:</label>
@@ -48,16 +49,21 @@
         <input type="number" id="new-price" required><br>
         <button id="update-price">update price</button>
     </form>
+</div>
 
     <div id="flight-list">
 
     </div>
 
     <div id="flight-Cart">
+        <div>
+            <button  class="btn-style" id="book-button">Book</button>
+            <button  class="btn-style" id="close-button">X</button>
+        </div>
         <h1>hello from the cart:</h1>
-        <div id="flights-cart-List"></div>
-        <button  class="btn-style" id="book-button">Book</button>
+        
         <div id="confirmation-message"></div>
+        <div id="flights-cart-List"></div>
     </div>
     <script src="./flights-booking.js"></script>
 
