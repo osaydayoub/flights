@@ -213,6 +213,9 @@ bookButton.addEventListener('click', function () {
         totalPrice += flight.price * flight.travelersNumber;
     })
     confirmationMessage.innerText = `Your flights booked successfully the total price is ${totalPrice}`;
+    localStorage.setItem("myFlights.", JSON.stringify(flightsCartArray));
+    let newObject = window.localStorage.getItem("myFlights.");
+    console.log(newObject);
 })
 
 // add new flight
@@ -240,7 +243,6 @@ addFlightForm.addEventListener("submit", function (event) {
 })
 
 //updatePriceForm
-
 updatePriceForm.addEventListener("submit", function (event) {
     event.preventDefault();
     const flightId = document.getElementById("flight-id").valueAsNumber;
@@ -251,9 +253,6 @@ updatePriceForm.addEventListener("submit", function (event) {
             flight.price=newPrice;
         }
     })
-
-    
-    
     showFlights(flights, flightListContainer, 1);
     updatePriceForm.reset();
 })
