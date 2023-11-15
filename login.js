@@ -1,13 +1,13 @@
 
 //Form Validation---------------------------------------------------------------------------------------------------
-const userForm = document.getElementById("userForm");
+const userForm = document.getElementById("user-form");
 const userNameInput = document.getElementById("username");
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 const checkBox = document.getElementById("admin");
-const logoutButton = document.querySelector(".logout-button");
+
 //If the admin checkbox is checked, set a flag to indicate the user's admin status.
-let userStatus=false;
+let adminStatus=false;
 
 // show error message and highlight the input
 function showError(input, message){
@@ -28,6 +28,7 @@ input.addEventListener('input', ()=>{
 })
 
 userForm.addEventListener('submit', function (e){
+    console.log('hi from userForm.addEventListener\n');
     e.preventDefault();
     let isValid = true;
     // username validation 
@@ -50,9 +51,9 @@ userForm.addEventListener('submit', function (e){
     }
 
     if(isValid){
-        userStatus=checkBox.checked;
-        //console.log(`userStatus=${userStatus}`);
-        localStorage.setItem("obj1", JSON.stringify({name:userNameInput.value,
+        adminStatus=checkBox.checked;
+        //console.log(`adminStatus=${adminStatus}`);
+        localStorage.setItem("userInformation", JSON.stringify({name:userNameInput.value,
             email:emailInput.value,
             password:passwordInput.value,
             admin:checkBox.checked
@@ -63,8 +64,3 @@ userForm.addEventListener('submit', function (e){
     }
 })
 
-logoutButton.addEventListener('click',function (){
-    localStorage.clear();
-   // window.location.replace("./");
-
-})
